@@ -235,7 +235,7 @@ DATA [<filename>|<postgis table/column>|<oracle table/column>|<sde parameters>]
     can filter data directly in the subquery using the !BOX! variable: 
     `WHERE ST_Intersects(wkb_geometry,!BOX!)`.
 
-    Alternatively, data come come from a :ref:`TILEINDEX <tileindex>`.
+    Alternatively, data can come from a :ref:`TILEINDEX <tileindex>`.
 
     .. seealso::
 
