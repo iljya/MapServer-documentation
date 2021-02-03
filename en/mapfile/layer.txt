@@ -7,6 +7,11 @@
  LAYER
 *****************************************************************************
 
+A layer specifies source data and how to style it. Typically, source data is
+specified with the :ref:`DATA` directive and styling is specified in one or
+more :ref:`CLASS` objects. The classes allow different styles to be
+used depending on the properties of the features being renderer.
+
 .. image:: ../images/layer_classes.png
     :align: center
     :height: 248
@@ -200,25 +205,27 @@ CONNECTIONTYPE [contour|kerneldensity|local|ogr|oraclespatial|plugin|postgis|sde
    pair: LAYER; DATA
    :name: mapfile-layer-data
 
-DATA [filename]|[sde parameters][postgis table/column][oracle table/column]
-    Full filename of the spatial data to process. No file extension is
-    necessary for shapefiles. Can be specified relative to the
-    SHAPEPATH option from the Map Object.
+DATA [<filename>|<postgis table/column>|<oracle table/column>|<sde parameters>]
+    Specifies the data source for this layer. Can be one of:
 
-    If this is an SDE layer, the parameter should include the name of
-    the layer as well as the geometry column, i.e. "mylayer,shape,myversion".
+    - *<filename>* filename of the spatial data to process, either absolute or
+      relative to the SHAPEPATH option of the enclosing Map Object. No file
+      extension is necessary for shapefiles.
 
-    If this is a PostGIS layer, the parameter should be in the form of
-    "<columnname> from <tablename>", where "columnname" is the name of the
-    column containing the geometry objects and "tablename" is the name of the
-    table from which the geometry data will be read.
+    - *<postgis table/column>* the parameter should be in the form of
+      "<columnname> from <tablename>", where "columnname" is the name of the
+      column containing the geometry objects and "tablename" is the name of the
+      table from which the geometry data will be read.
 
-    For Oracle, use "shape FROM table" or "shape FROM (SELECT statement)" or
-    even more complex Oracle compliant queries! Note that there are important
-    performance impacts when using spatial subqueries however. Try using
-    MapServer's FILTER_ whenever possible instead. You can also see the SQL
-    submitted by forcing an error, for instance by submitting a DATA parameter
-    you know won't work, using for example a bad column name.
+    - *<oracle table/column>* Use "shape FROM table" or "shape FROM (SELECT statement)"
+      or even more complex Oracle compliant queries! Note that there are important
+      performance impacts when using spatial subqueries however. Try using
+      MapServer's FILTER_ whenever possible instead. You can also see the SQL
+      submitted by forcing an error, for instance by submitting a DATA parameter
+      you know won't work, using for example a bad column name.
+    
+    - *<sde params>* the parameter should include the name of the layer as well
+      as the geometry column, i.e. "mylayer,shape,myversion".
 
     In a standard use case, when PostGIS, SpatiaLite, or GeoPackage are used as data
     source the BBOX filter (bounding boxes intersect, `&&` with PostGIS) is used
@@ -227,6 +234,8 @@ DATA [filename]|[sde parameters][postgis table/column][oracle table/column]
     in the query. In order to filter data sooner, ie before the final query, one
     can filter data directly in the subquery using the !BOX! variable: 
     `WHERE ST_Intersects(wkb_geometry,!BOX!)`.
+
+    Alternatively, data can come from a :ref:`TILEINDEX <tileindex>`.
 
     .. seealso::
 
